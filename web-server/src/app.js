@@ -5,8 +5,15 @@ const { title } = require("process");
 
 
 const app=express();
-app.set('view engine','hbs');
+//Define path for express config
+
 app.use(express.static(path.join(__dirname,'../public')));
+const viewspath=path.join(__dirname,'../templates')
+
+
+app.set('view engine','hbs');
+app.set('views',viewspath);
+
 app.get('',(req,res)=>{
     res.render('index',{
         title:'Weather App',
