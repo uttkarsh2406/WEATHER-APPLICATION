@@ -3,6 +3,7 @@ const express=require("express");
 const exp = require("constants");
 const { title } = require("process");
 const hbs=require("hbs");
+const { error } = require("console");
 
 const app=express();
 //Define path for express config
@@ -51,9 +52,27 @@ app.get('/help',(req,res)=>{
 
 
 app.get("/weather",(req,res)=>{
+    if(!req.query.address){
+        return res.send({
+            error:"Please Provide a Location"
+        })
+    }
     res.send({
         forecast:"It is snowing",
         location:"Jammu",
+        address:req.query.address,
+    })
+})
+
+app.get('/products',(req,res)=>{
+    if(!req.query.search){
+        return res.send({
+            error:'You must provide a search term',
+        })
+    }
+    console.log(req.query.search);
+    res.send({
+        product:[]
     })
 })
 
@@ -75,4 +94,4 @@ app.get('*',(req,res)=>{
 })
 app.listen(3000,()=>{
     console.log("Server is up");
-});
+}); 
