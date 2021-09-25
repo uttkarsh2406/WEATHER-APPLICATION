@@ -1,10 +1,11 @@
+const geocode=require("./utils/geocode");
+const forecast=require("./utils/forecast");
 const path=require("path");
 const express=require("express");
 const exp = require("constants");
 const { title } = require("process");
 const hbs=require("hbs");
 const { error } = require("console");
-
 const app=express();
 //Define path for express config
 
@@ -57,11 +58,27 @@ app.get("/weather",(req,res)=>{
             error:"Please Provide a Location"
         })
     }
-    res.send({
-        forecast:"It is snowing",
-        location:"Jammu",
-        address:req.query.address,
+    geocode(req.query.address,(error,{latitude,longitude,location})=>{
+          if(error){
+              return res.send({error});
+          }
+          forecast(latitude,longitude,(error,data)=>{
+              if(error){
+                  return res.send({error});
+              }
+              res.send({
+                  forecast:data,
+                  location,
+                  address:req.query.address,
+              })
+          })
     })
+
+    // res.send({
+    //     forecast:"It is snowing",
+    //     location:"Jammu",
+    //     address:req.query.address,
+    // })
 })
 
 app.get('/products',(req,res)=>{
