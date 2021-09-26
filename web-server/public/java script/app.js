@@ -21,17 +21,23 @@ console.log("hello i am utttkarsh");
 
 const weatherform=document.querySelector('form')
 const search=document.querySelector('input')
+const mess1=document.querySelector('#message1')
+
+const mess2=document.querySelector('#message2')
+
 weatherform.addEventListener('submit',(event)=>{
     event.preventDefault()
     const location=search.value;
+    mess1.textContent="Loading...."
+    mess2.textContent=''
     fetch('http://localhost:3000/weather?address='+location).then((response)=>{
     response.json().then((data)=>{
         if(data.error){
-            console.log(data.error);
+            mess1.textContent=data.error;
         }
         else{
-             console.log(data.location);
-             console.log(data.forecast);
+             mess1.textContent=data.location
+             mess2.textContent=data.forecast
         }
     })
 })
